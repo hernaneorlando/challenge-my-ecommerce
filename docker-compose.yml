@@ -1,0 +1,107 @@
+services:
+
+  sql.database:
+    container_name: sql_database
+    image: postgres:13
+    environment:
+      POSTGRES_DB: developer_evaluation
+      POSTGRES_USER: developer
+      POSTGRES_PASSWORD: ev@luAt10n
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+    networks:
+      - my-ecommerce-network
+
+  nosql.database:
+    container_name: nosql_database
+    image: mongo:8.0
+    environment:
+        MONGO_INITDB_ROOT_USERNAME: developer
+        MONGO_INITDB_ROOT_PASSWORD: ev@luAt10n
+    ports:
+      - "27017:27017"
+    networks:
+      - my-ecommerce-network
+
+  cache.redis:
+    container_name: cache_redis
+    image: redis:7.4.1-alpine     
+    command: redis-server --requirepass ev@luAt10n
+    environment:
+       MONGO_INITDB_ROOT_USERNAME: developer
+       MONGO_INITDB_ROOT_PASSWORD: ev@luAt10n
+    ports:
+       - "6379"
+    networks:
+      - my-ecommerce-network
+
+  usermanagement.webapi:
+    container_name: usermanagement.webapi
+    image: usermanagement.webapi
+    build:
+      context: .
+      dockerfile: src/UserManagement/UserManagement.WebApi/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_HTTP_PORTS=8080
+    depends_on:
+      sql.database:
+        condition: service_started
+    ports:
+      - "8080:8080"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://usermanagement.webapi:8080/health"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - my-ecommerce-network
+  
+  catalogmanagement.webapi:
+    container_name: catalogmanagement.webapi
+    image: catalogmanagement.webapi
+    build:
+      context: .
+      dockerfile: src/CatalogManagement/CatalogManagement.WebApi/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_HTTP_PORTS=8080
+    depends_on:
+      sql.database:
+        condition: service_started
+    ports:
+      - "8081:8080"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://catalogmanagement.webapi:8081/health"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - my-ecommerce-network
+  
+  salesmanagement.webapi:
+    container_name: salesmanagement.webapi
+    image: salesmanagement.webapi
+    build:
+      context: .
+      dockerfile: src/SalesManagement/SalesManagement.WebApi/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_HTTP_PORTS=8080
+    depends_on:
+      sql.database:
+        condition: service_started
+    ports:
+      - "8082:8080"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://salesmanagement.webapi:8082/health"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - my-ecommerce-network
+
+networks:
+  my-ecommerce-network:
+    driver: bridge
