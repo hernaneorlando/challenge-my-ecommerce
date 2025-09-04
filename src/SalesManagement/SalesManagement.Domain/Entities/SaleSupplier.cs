@@ -6,7 +6,7 @@ namespace SalesManagement.Domain.Entities;
 /// Represents a Supplier, as an External Identity, in the system with minimal information.
 /// This entity follows domain-driven design principles and includes business rules validation.
 /// </summary>
-public class Supplier : ExternalIdentity
+public class SaleSupplier : ExternalIdentity
 {
     /// <summary>
     /// Gets or sets the supplier's full name.

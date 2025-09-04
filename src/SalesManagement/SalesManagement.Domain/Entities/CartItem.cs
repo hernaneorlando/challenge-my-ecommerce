@@ -32,4 +32,14 @@ public class CartItem : BaseEntity
     /// Gets or sets the cart's discount.
     /// </summary>
     public decimal Discount { get; set; }
+
+    /// <summary>
+    /// Gets or sets the cart Id associated with this item.
+    /// </summary>
+    public Guid CartId { get; set; }
+
+    /// <summary>
+    /// Gets or sets the cart associated with this item.
+    /// </summary>
+    public Cart Cart { get; set; } = null!;
 }

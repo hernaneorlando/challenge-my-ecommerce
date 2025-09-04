@@ -13,8 +13,15 @@ public class BranchConfiguration : IEntityTypeConfiguration<Branch>
         builder.HasKey(b => b.Id);
         builder.Property(b => b.Id).HasColumnType("uuid").HasDefaultValueSql("gen_random_uuid()");
 
-        builder.Property(b => b.Code).IsRequired();
-        builder.Property(b => b.Description).IsRequired();
+        builder.Property(b => b.Name)
+            .IsRequired().HasMaxLength(100);
+
+        builder.Property(b => b.Code)
+            .IsRequired().HasMaxLength(100);
+
+        builder.Property(b => b.Description)
+            .IsRequired().HasMaxLength(100);
+
         builder.Property(b => b.Address).HasMaxLength(100);
 
         builder.HasMany(b => b.Suppliers)

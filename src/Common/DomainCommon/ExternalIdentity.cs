@@ -5,7 +5,7 @@ namespace Common.DomainCommon;
 public class ExternalIdentity : IComparable<ExternalIdentity>
 {
     /// <summary>
-    /// Gets or sets the unique identifier for the entity.
+    /// Gets or sets the unique identifier for the external entity.
     /// </summary>
     public Guid Id { get; set; }
 
