@@ -11,7 +11,7 @@ public class Sale : BaseEntity
 {
     /// <summary>
     /// Gets or sets the sale's number.
-    /// Must not be null.
+    /// Must not be null and not exceed 100 characters.
     /// </summary>
     public string Number { get; set; } = string.Empty;
 
@@ -43,5 +43,5 @@ public class Sale : BaseEntity
     /// Gets or sets the sale item's information.
     /// Must not be null.
     /// </summary>
-    public ICollection<SalesItem> Items { get; set; } = [];
+    public ICollection<SaleItem> Items { get; set; } = [];
 }

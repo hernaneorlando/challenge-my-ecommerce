@@ -10,6 +10,7 @@ public class User : ExternalIdentity
 {
     /// <summary>
     /// Gets or sets the user's full name.
+    /// Must not exceed 100 characters.
     /// </summary>
     public string Name { get; set; } = string.Empty;
 }

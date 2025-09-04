@@ -23,9 +23,9 @@ public class Cart : BaseEntity
 
     /// <summary>
     /// Gets or sets the cart's checkout date.
-    /// Must not be null.
+    /// Can be null if the cart has not been checked out yet.
     /// </summary>
-    public DateOnly CheckoutDate { get; set; }
+    public DateOnly? CheckoutDate { get; set; }
 
     /// <summary>
     /// Gets or sets the cart's status.
@@ -36,5 +36,5 @@ public class Cart : BaseEntity
     /// <summary>
     /// Gets or sets the cart items.
     /// </summary>
-    public ICollection<CartItem> Products { get; set; } = [];
+    public ICollection<CartItem> Items { get; set; } = [];
 }

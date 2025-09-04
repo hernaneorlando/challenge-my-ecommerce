@@ -12,13 +12,13 @@ public class Branch : BaseEntity
 {
     /// <summary>
     /// Gets or sets the branch's name.
-    /// Must not be null or empty.
+    /// Must not be null or empty, and must not exceed 100 characters.
     /// </summary>
     public string Name { get; set; } = string.Empty;
 
     /// <summary>
     /// Gets or sets the branch's code.
-    /// Must not be null or empty.
+    /// Must not be null or empty, and must not exceed 100 characters.
     /// </summary>
     public string Code { get; set; } = string.Empty;
 
@@ -30,7 +30,7 @@ public class Branch : BaseEntity
 
     /// <summary>
     /// Gets or sets the branch's address.
-    /// If provided, must be at least 10 characters long and not exceed 100 characters.
+    /// If provided, must not exceed 100 characters.
     /// </summary>
     public string? Address { get; set; }
 

@@ -14,7 +14,8 @@ public class User : BaseEntity, IUser
 {
     /// <summary>
     /// Gets or sets the user's full name.
-    /// Must not be null or empty and should contain both first and last names.
+    /// Must not be null or empty, should contain both first and last names,
+    /// and not exceed 100 characters.
     /// </summary>
     public string Name { get; set; } = string.Empty;
 
