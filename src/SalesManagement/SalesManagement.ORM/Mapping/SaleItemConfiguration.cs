@@ -8,7 +8,7 @@ public class SaleItemConfiguration : IEntityTypeConfiguration<SaleItem>
 {
     public void Configure(EntityTypeBuilder<SaleItem> builder)
     {
-        builder.ToTable("Sales");
+        builder.ToTable("SalesItems");
 
         builder.HasKey(s => s.Id);
         builder.Property(s => s.Id).HasColumnType("uuid").HasDefaultValueSql("gen_random_uuid()");

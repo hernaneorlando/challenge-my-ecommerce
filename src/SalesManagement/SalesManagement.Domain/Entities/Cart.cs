@@ -13,13 +13,13 @@ public class Cart : BaseEntity
     /// Gets or sets the customer's information.
     /// Must not be null.
     /// </summary>
-    public User Customer { get; set; } = null!;
+    public SaleUser Customer { get; set; } = null!;
 
     /// <summary>
     /// Gets or sets the branch's information.
     /// Must not be null.
     /// </summary>
-    public Branch Branch { get; set; } = null!;
+    public SaleBranch Branch { get; set; } = null!;
 
     /// <summary>
     /// Gets or sets the cart's checkout date.

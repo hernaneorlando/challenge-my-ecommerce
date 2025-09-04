@@ -25,7 +25,7 @@ public class Sale : BaseEntity
     /// Gets or sets the branch's information.
     /// Must not be null.
     /// </summary>
-    public Branch Branch { get; set; } = null!;
+    public SaleBranch Branch { get; set; } = null!;
 
     /// <summary>
     /// Gets or sets the total amount for each sale item.

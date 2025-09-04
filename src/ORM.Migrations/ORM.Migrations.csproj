@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CatalogManagement\CatalogManagement.ORM\CatalogManagement.ORM.csproj" />
+    <ProjectReference Include="..\SalesManagement\SalesManagement.ORM\SalesManagement.ORM.csproj" />
     <ProjectReference Include="..\UserManagement\UserManagement.ORM\UserManagement.ORM.csproj" />
   </ItemGroup>
 

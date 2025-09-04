@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using ORM.Migrations;
@@ -11,9 +12,11 @@ using ORM.Migrations;
 namespace ORM.Migrations.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250904150544_AddCartEntity")]
+    partial class AddCartEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -215,75 +218,6 @@ namespace ORM.Migrations.Migrations
                     b.ToTable("CartItems", (string)null);
                 });
 
-            modelBuilder.Entity("SalesManagement.Domain.Entities.Sale", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
-                        .HasDefaultValueSql("gen_random_uuid()");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Number")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("character varying(20)");
-
-                    b.Property<decimal>("TotalAmount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Sales", (string)null);
-                });
-
-            modelBuilder.Entity("SalesManagement.Domain.Entities.SaleItem", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
-                        .HasDefaultValueSql("gen_random_uuid()");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<decimal>("Discount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("integer");
-
-                    b.Property<Guid>("SaleId")
-                        .HasColumnType("uuid");
-
-                    b.Property<decimal>("TotalAmount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal>("UnitPrice")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("SaleId");
-
-                    b.ToTable("SalesItems", (string)null);
-                });
-
             modelBuilder.Entity("UserManagement.Domain.Entities.User", b =>
                 {
                     b.Property<Guid>("Id")
@@ -480,107 +414,6 @@ namespace ORM.Migrations.Migrations
                     b.Navigation("Cart");
                 });
 
-            modelBuilder.Entity("SalesManagement.Domain.Entities.Sale", b =>
-                {
-                    b.OwnsOne("SalesManagement.Domain.Entities.SaleBranch", "Branch", b1 =>
-                        {
-                            b1.Property<Guid>("SaleId")
-                                .ValueGeneratedOnAdd()
-                                .HasColumnType("uuid");
-
-                            b1.Property<string>("Code")
-                                .IsRequired()
-                                .HasMaxLength(100)
-                                .HasColumnType("character varying(100)")
-                                .HasColumnName("BranchCode");
-
-                            b1.Property<Guid>("Id")
-                                .HasColumnType("uuid")
-                                .HasColumnName("BranchId");
-
-                            b1.Property<string>("Name")
-                                .IsRequired()
-                                .HasMaxLength(100)
-                                .HasColumnType("character varying(100)")
-                                .HasColumnName("BranchName");
-
-                            b1.HasKey("SaleId");
-
-                            b1.ToTable("Sales");
-
-                            b1.WithOwner()
-                                .HasForeignKey("SaleId");
-                        });
-
-                    b.Navigation("Branch")
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("SalesManagement.Domain.Entities.SaleItem", b =>
-                {
-                    b.HasOne("SalesManagement.Domain.Entities.Sale", "Sale")
-                        .WithMany("Items")
-                        .HasForeignKey("SaleId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.OwnsOne("SalesManagement.Domain.Entities.SaleProduct", "Product", b1 =>
-                        {
-                            b1.Property<Guid>("SaleItemId")
-                                .ValueGeneratedOnAdd()
-                                .HasColumnType("uuid");
-
-                            b1.Property<Guid>("Id")
-                                .HasColumnType("uuid")
-                                .HasColumnName("ProductId");
-
-                            b1.Property<string>("Name")
-                                .IsRequired()
-                                .HasMaxLength(100)
-                                .HasColumnType("character varying(100)")
-                                .HasColumnName("ProductName");
-
-                            b1.HasKey("SaleItemId");
-
-                            b1.ToTable("SalesItems");
-
-                            b1.WithOwner()
-                                .HasForeignKey("SaleItemId");
-                        });
-
-                    b.OwnsOne("SalesManagement.Domain.Entities.SaleSupplier", "Supplier", b1 =>
-                        {
-                            b1.Property<Guid>("SaleItemId")
-                                .ValueGeneratedOnAdd()
-                                .HasColumnType("uuid");
-
-                            b1.Property<Guid>("Id")
-                                .HasColumnType("uuid")
-                                .HasColumnName("SupplierId");
-
-                            b1.Property<string>("Name")
-                                .IsRequired()
-                                .HasMaxLength(100)
-                                .HasColumnType("character varying(100)")
-                                .HasColumnName("SupplierName");
-
-                            b1.HasKey("SaleItemId");
-
-                            b1.ToTable("SalesItems");
-
-                            b1.WithOwner()
-                                .HasForeignKey("SaleItemId");
-                        });
-
-                    b.Navigation("Product")
-                        .IsRequired();
-
-                    b.Navigation("Sale");
-
-                    b.Navigation("Supplier")
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("UserManagement.Domain.Entities.User", b =>
                 {
                     b.OwnsOne("Common.DomainCommon.ValueObjects.PhoneNumber", "Phone", b1 =>
@@ -617,11 +450,6 @@ namespace ORM.Migrations.Migrations
                 });
 
             modelBuilder.Entity("SalesManagement.Domain.Entities.Cart", b =>
-                {
-                    b.Navigation("Items");
-                });
-
-            modelBuilder.Entity("SalesManagement.Domain.Entities.Sale", b =>
                 {
                     b.Navigation("Items");
                 });
