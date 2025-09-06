@@ -3,6 +3,8 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SalesManagement.Application.Carts.CreateCart;
+using SalesManagement.Application.Carts.DeleteCart;
+using SalesManagement.Application.Carts.DeleteCartItem;
 using SalesManagement.Application.Carts.GetCartById;
 using SalesManagement.Application.Carts.GetCarts;
 
@@ -75,5 +77,50 @@ public class CartController(IMediator mediator) : Controller
     {
         var query = filters.GetQuery();
         return Ok(await mediator.Send(query, cancellationToken));
+    }
+
+    /// <summary>
+    /// Deletes a cart by their ID
+    /// </summary>
+    /// <param name="id">The unique identifier of the cart to delete</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>Success response if the cart was deleted</returns>
+    [HttpDelete("{id}")]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> DeleteCart([FromRoute] Guid id, CancellationToken cancellationToken)
+    {
+        var command = new DeleteCartCommand(id);
+        await mediator.Send(command, cancellationToken);
+
+        return Ok(new ApiResponse
+        {
+            Success = true,
+            Message = "Cart deleted successfully"
+        });
+    }
+
+    /// <summary>
+    /// Deletes a cart item by their ID
+    /// </summary>
+    /// <param name="cartId">The unique identifier of the cart related to the item</param>
+    /// <param name="itemId">The unique identifier of the cart item to delete</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>Success response if the cart item was deleted</returns>
+    [HttpDelete("{cartId}/cartitem/{itemId}")]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> DeleteCartItem([FromRoute] Guid cartId, Guid itemId, CancellationToken cancellationToken)
+    {
+        var command = new DeleteCartItemCommand(cartId, itemId);
+        await mediator.Send(command, cancellationToken);
+
+        return Ok(new ApiResponse
+        {
+            Success = true,
+            Message = "Cart item deleted successfully"
+        });
     }
 }

@@ -10,7 +10,7 @@ namespace SalesManagement.ORM.Repositories;
 /// </summary>
 public class CartRepository : BaseRepository<Cart>, ICartRepository
 {
-private readonly DefaultContext _context;
+    private readonly DefaultContext _context;
 
     /// <summary>
     /// Initializes a new instance of CartRepository
@@ -70,7 +70,7 @@ private readonly DefaultContext _context;
         await _context.SaveChangesAsync(cancellationToken);
         return result.Entity;
     }
-    
+
     /// <summary>
     /// Deletes a Cart from the database
     /// </summary>
@@ -79,11 +79,30 @@ private readonly DefaultContext _context;
     /// <returns>True if the Cart was deleted, false if not found</returns>
     public async Task<bool> DeleteAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        var Cart = await GetByIdAsync(id, cancellationToken);
-        if (Cart == null)
+        var cart = await GetByIdAsync(id, cancellationToken);
+        if (cart == null)
             return false;
 
-        _context.Carts.Remove(Cart);
+        _context.Carts.Remove(cart);
+        await _context.SaveChangesAsync(cancellationToken);
+        return true;
+    }
+    
+    /// <summary>
+    /// Deletes a Cart item from the database
+    /// </summary>
+    /// <param name="cartId">The unique identifier of the Cart related to the item</param>
+    /// <param name="cartItemId">The unique identifier of the Cart item to delete</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>True if the Cart item was deleted, false if not found</returns>
+    public async Task<bool> DeleteCartItemAsync(Guid cartId, Guid cartItemId, CancellationToken cancellationToken = default)
+    {
+        var cartItem = await _context.CartItems
+            .FirstOrDefaultAsync(ci => ci.Id == cartItemId && ci.CartId == cartId, cancellationToken);
+        if (cartItem == null)
+            return false;
+
+        _context.CartItems.Remove(cartItem);
         await _context.SaveChangesAsync(cancellationToken);
         return true;
     }

@@ -47,4 +47,13 @@ public interface ICartRepository : IBaseRepository<Cart>
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>True if the deletion was successful, false otherwise</returns>
     Task<bool> DeleteAsync(Guid id, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Deletes a Cart item from the database
+    /// </summary>
+    /// <param name="cartId">The unique identifier of the Cart related to the item</param>
+    /// <param name="cartItemId">The unique identifier of the Cart item to delete</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>True if the Cart item was deleted, false if not found</returns>
+    Task<bool> DeleteCartItemAsync(Guid cartId, Guid cartItemId, CancellationToken cancellationToken = default);
 }

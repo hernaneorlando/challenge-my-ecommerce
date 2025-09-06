@@ -5,4 +5,4 @@ namespace CatalogManagement.Application.Products.DeleteProduct;
 /// <summary>
 /// Command for deleting a product
 /// </summary>
-public record class DeleteProductCommand(Guid Id) : IRequest;
+public record DeleteProductCommand(Guid Id) : IRequest;
