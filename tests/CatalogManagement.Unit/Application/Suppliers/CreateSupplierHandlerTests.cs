@@ -1,11 +1,11 @@
 using CatalogManagement.Application.Suppliers.CreateSupplier;
 using CatalogManagement.Domain.Entities;
-using CatalogManagement.Domain.Repositories;
 using AutoMapper;
 using NSubstitute;
 using FluentAssertions;
 using CatalogManagement.Unit.Application.Suppliers.TestData;
 using Common.DomainCommon.ValueObjects;
+using CatalogManagement.Application.Repositories;
 
 namespace CatalogManagement.Unit.Application.Suppliers;
 

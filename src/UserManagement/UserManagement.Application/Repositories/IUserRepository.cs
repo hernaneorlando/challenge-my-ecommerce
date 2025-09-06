@@ -1,12 +1,12 @@
 using Common.ORMCommon;
 using UserManagement.Domain.Entities;
 
-namespace UserManagement.Domain.Repositories;
+namespace UserManagement.Application.Repositories;
 
 /// <summary>
 /// Repository interface for User entity operations
 /// </summary>
-public interface IUserRepository : IPaginatedRepository<User>
+public interface IUserRepository : IBaseRepository<User>
 {
     /// <summary>
     /// Creates a new user in the repository

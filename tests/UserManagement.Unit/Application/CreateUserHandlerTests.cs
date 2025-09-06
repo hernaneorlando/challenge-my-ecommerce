@@ -2,12 +2,12 @@ using Common.DomainCommon.ValueObjects;
 using UserManagement.Application.Common.Security;
 using UserManagement.Application.Users.CreateUser;
 using UserManagement.Domain.Entities;
-using UserManagement.Domain.Repositories;
 using UserManagement.Unit.Application.TestData;
 using AutoMapper;
 using FluentAssertions;
 using NSubstitute;
 using Xunit;
+using UserManagement.Application.Repositories;
 
 namespace UserManagement.Unit.Application;
 

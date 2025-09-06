@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using MediatR;
 using FluentValidation;
-using UserManagement.Domain.Repositories;
 using UserManagement.Domain.Entities;
 using UserManagement.Application.Common.Security;
+using UserManagement.Application.Repositories;
 
 namespace UserManagement.Application.Users.CreateUser;
 

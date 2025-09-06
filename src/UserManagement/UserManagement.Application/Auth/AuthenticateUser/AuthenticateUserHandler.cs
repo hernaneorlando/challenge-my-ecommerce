@@ -1,7 +1,7 @@
-using UserManagement.Domain.Repositories;
 using UserManagement.Domain.Specifications;
 using MediatR;
 using UserManagement.Application.Common.Security;
+using UserManagement.Application.Repositories;
 
 namespace UserManagement.Application.Auth.AuthenticateUser
 {
@@ -23,17 +23,13 @@ namespace UserManagement.Application.Auth.AuthenticateUser
 
         public async Task<AuthenticateUserResult> Handle(AuthenticateUserCommand request, CancellationToken cancellationToken)
         {
-            var user = await _userRepository.GetByEmailAsync(request.Email, cancellationToken);
-            
+            var activeUserSpec = new ActiveUserSpecification(request.Email);
+            var user = await _userRepository.Find(activeUserSpec, cancellationToken)
+                ?? throw new UnauthorizedAccessException("User is not active");
+                
             if (user == null || !_passwordHasher.VerifyPassword(request.Password, user.Password))
             {
                 throw new UnauthorizedAccessException("Invalid credentials");
-            }
-
-            var activeUserSpec = new ActiveUserSpecification();
-            if (!activeUserSpec.IsSatisfiedBy(user))
-            {
-                throw new UnauthorizedAccessException("User is not active");
             }
 
             var token = _jwtTokenGenerator.GenerateToken(user);

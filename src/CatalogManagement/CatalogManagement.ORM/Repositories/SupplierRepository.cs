@@ -1,5 +1,5 @@
+using CatalogManagement.Application.Repositories;
 using CatalogManagement.Domain.Entities;
-using CatalogManagement.Domain.Repositories;
 using Common.ORMCommon;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,7 +8,7 @@ namespace CatalogManagement.ORM.Repositories;
 /// <summary>
 /// Implementation of ISupplierRepository using EF Core
 /// </summary>
-public class SupplierRepository : PaginatedRepository<Supplier>, ISupplierRepository
+public class SupplierRepository : BaseRepository<Supplier>, ISupplierRepository
 {
     private readonly DefaultContext _context;
 

@@ -72,15 +72,10 @@ public class BranchesController(IMediator mediator) : Controller
     [HttpGet]
     [ProducesResponseType(typeof(PaginatedResponse<GetBranchesResponse>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetBranches(
-        [FromQuery] GetBranchesQuery query,
-        [FromQuery] Dictionary<string, string> filters,
+        [FromQuery] QueryStringWithFilters<GetBranchesQuery, GetBranchesResponse> filters,
         CancellationToken cancellationToken)
     {
-        foreach (var filter in query.SanitizeFilters(filters))
-        {
-            query.AddFilter(filter.Key, filter.Value);
-        }
-
+        var query = filters.GetQuery();
         return Ok(await mediator.Send(query, cancellationToken));
     }
 

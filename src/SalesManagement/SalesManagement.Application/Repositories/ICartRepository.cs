@@ -1,12 +1,12 @@
 using Common.ORMCommon;
 using SalesManagement.Domain.Entities;
 
-namespace SalesManagement.Domain.Repositories;
+namespace SalesManagement.Application.Repositories;
 
 /// <summary>
 /// Repository interface for Cart entity operations
 /// </summary>
-public interface ICartRepository : IPaginatedRepository<Cart>
+public interface ICartRepository : IBaseRepository<Cart>
 {
     /// <summary>
     /// Creates a new Cart in the repository
@@ -23,6 +23,14 @@ public interface ICartRepository : IPaginatedRepository<Cart>
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>The Cart if found, null otherwise</returns>
     Task<Cart?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Retrieves a Cart by the Customer identifier
+    /// </summary>
+    /// <param name="customerId">The unique identifier of the Customer</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>The Cart if found, null otherwise</returns>
+    Task<Cart?> GetByCustomerIdAsync(Guid customerId, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Updates an existing Cart in the repository

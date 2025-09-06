@@ -1,12 +1,12 @@
 using CatalogManagement.Domain.Entities;
 using Common.ORMCommon;
 
-namespace CatalogManagement.Domain.Repositories;
+namespace CatalogManagement.Application.Repositories;
 
 /// <summary>
 /// Repository interface for Product entity operations
 /// </summary>
-public interface IProductRepository : IPaginatedRepository<Product>
+public interface IProductRepository : IBaseRepository<Product>
 {
     /// <summary>
     /// Creates a new product in the repository

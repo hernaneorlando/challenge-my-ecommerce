@@ -9,5 +9,6 @@ public enum FilterOperator
     GreaterThan,
     LessThan,
     GreaterThanOrEqual,
-    LessThanOrEqual
+    LessThanOrEqual,
+    Or
 }

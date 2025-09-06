@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using SalesManagement.Application.Repositories;
+using SalesManagement.ORM.Repositories;
 
 namespace SalesManagement.ORM;
 
@@ -19,6 +21,8 @@ public static class DependencyResolver
             ));
 
         services.AddScoped<DbContext>(provider => provider.GetRequiredService<DefaultContext>());
+        services.AddScoped<ICartRepository, CartRepository>();
+        services.AddScoped<ISaleRepository, SaleRepository>();
 
         return services;
     }

@@ -1,5 +1,5 @@
+using CatalogManagement.Application.Repositories;
 using CatalogManagement.Domain.Entities;
-using CatalogManagement.Domain.Repositories;
 using Common.ORMCommon;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,7 +8,7 @@ namespace CatalogManagement.ORM.Repositories;
 /// <summary>
 /// Implementation of IBranchRepository using EF Core
 /// </summary>
-public class BranchRepository : PaginatedRepository<Branch>, IBranchRepository
+public class BranchRepository : BaseRepository<Branch>, IBranchRepository
 {
 private readonly DefaultContext _context;
 

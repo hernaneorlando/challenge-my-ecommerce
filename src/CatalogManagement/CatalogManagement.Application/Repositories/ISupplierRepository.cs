@@ -1,12 +1,12 @@
 using CatalogManagement.Domain.Entities;
 using Common.ORMCommon;
 
-namespace CatalogManagement.Domain.Repositories;
+namespace CatalogManagement.Application.Repositories;
 
 /// <summary>
 /// Repository interface for Supplier entity operations
 /// </summary>
-public interface ISupplierRepository : IPaginatedRepository<Supplier>
+public interface ISupplierRepository : IBaseRepository<Supplier>
 {
     /// <summary>
     /// Creates a new supplier in the repository

@@ -1,12 +1,12 @@
 using CatalogManagement.Domain.Entities;
 using Common.ORMCommon;
 
-namespace CatalogManagement.Domain.Repositories;
+namespace CatalogManagement.Application.Repositories;
 
 /// <summary>
 /// Repository interface for Branch entity operations
 /// </summary>
-public interface IBranchRepository : IPaginatedRepository<Branch>
+public interface IBranchRepository : IBaseRepository<Branch>
 {
     /// <summary>
     /// Creates a new branch in the repository

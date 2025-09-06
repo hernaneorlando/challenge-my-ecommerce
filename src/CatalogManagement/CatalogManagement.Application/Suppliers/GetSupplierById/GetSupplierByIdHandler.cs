@@ -1,6 +1,6 @@
-using CatalogManagement.Domain.Repositories;
 using AutoMapper;
 using MediatR;
+using CatalogManagement.Application.Repositories;
 
 namespace CatalogManagement.Application.Suppliers.GetSupplierById;
 

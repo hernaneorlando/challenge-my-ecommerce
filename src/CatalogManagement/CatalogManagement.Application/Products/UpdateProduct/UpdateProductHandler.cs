@@ -1,7 +1,7 @@
 using CatalogManagement.Domain.Entities;
-using CatalogManagement.Domain.Repositories;
 using AutoMapper;
 using MediatR;
+using CatalogManagement.Application.Repositories;
 
 namespace CatalogManagement.Application.Products.UpdateProduct;
 

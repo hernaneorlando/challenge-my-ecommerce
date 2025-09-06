@@ -12,14 +12,15 @@ namespace UserManagement.Unit.Domain.Specifications
         [InlineData(UserStatus.Active, true)]
         [InlineData(UserStatus.Inactive, false)]
         [InlineData(UserStatus.Suspended, false)]
-        public void IsSatisfiedBy_ShouldValidateUserStatus(UserStatus status, bool expectedResult)
+        public void Predicate_ShouldValidateUserStatus(UserStatus status, bool expectedResult)
         {
             // Arrange
             var user = ActiveUserSpecificationTestData.GenerateUser(status);
-            var specification = new ActiveUserSpecification();
+            var specification = new ActiveUserSpecification(user.Email);
 
             // Act
-            var result = specification.IsSatisfiedBy(user);
+            var predicate = specification.Predicate.Compile();
+            var result = predicate.Invoke(user);
 
             // Assert
             result.Should().Be(expectedResult);

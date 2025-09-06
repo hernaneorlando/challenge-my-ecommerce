@@ -1,6 +1,6 @@
 using MediatR;
 using FluentValidation;
-using UserManagement.Domain.Repositories;
+using UserManagement.Application.Repositories;
 
 namespace UserManagement.Application.Users.DeleteUser;
 

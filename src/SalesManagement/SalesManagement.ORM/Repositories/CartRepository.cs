@@ -1,14 +1,14 @@
 using Common.ORMCommon;
 using Microsoft.EntityFrameworkCore;
+using SalesManagement.Application.Repositories;
 using SalesManagement.Domain.Entities;
-using SalesManagement.Domain.Repositories;
 
 namespace SalesManagement.ORM.Repositories;
 
 /// <summary>
 /// Implementation of ICartRepository using EF Core
 /// </summary>
-public class CartRepository : PaginatedRepository<Cart>, ICartRepository
+public class CartRepository : BaseRepository<Cart>, ICartRepository
 {
 private readonly DefaultContext _context;
 
@@ -43,6 +43,17 @@ private readonly DefaultContext _context;
     public async Task<Cart?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
         return await _context.Carts.FirstOrDefaultAsync(c => c.Id == id, cancellationToken);
+    }
+
+    /// <summary>
+    /// Retrieves a Cart by the Customer identifier
+    /// </summary>
+    /// <param name="customerId">The unique identifier of the Customer</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>The Cart if found, null otherwise</returns>
+    public async Task<Cart?> GetByCustomerIdAsync(Guid customerId, CancellationToken cancellationToken = default)
+    {
+        return await _context.Carts.FirstOrDefaultAsync(c => c.Customer.Id == customerId, cancellationToken);
     }
 
     /// <summary>
