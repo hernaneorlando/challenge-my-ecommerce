@@ -92,15 +92,10 @@ public class UsersController(IMediator _mediator, IMapper _mapper) : BaseControl
     [HttpGet]
     [ProducesResponseType(typeof(PaginatedResponse<GetUsersResponse>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetUsers(
-        [FromQuery] GetUsersQuery query,
-        [FromQuery] Dictionary<string, string> filters,
+        [FromQuery] QueryStringWithFilters<GetUsersQuery, GetUsersResponse> filters,
         CancellationToken cancellationToken)
     {
-        foreach (var filter in query.SanitizeFilters(filters))
-        {
-            query.AddFilter(filter.Key, filter.Value);
-        }
-
+        var query = filters.GetQuery();
         return Ok(await _mediator.Send(query, cancellationToken));
     }
 

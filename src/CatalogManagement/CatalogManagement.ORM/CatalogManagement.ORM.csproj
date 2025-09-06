@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CatalogManagement.Application\CatalogManagement.Application.csproj" />
     <ProjectReference Include="..\CatalogManagement.Domain\CatalogManagement.Domain.csproj" />
   </ItemGroup>
 

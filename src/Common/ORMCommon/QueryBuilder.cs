@@ -13,25 +13,10 @@ public static class QueryBuilder
         {
             var parameter = Expression.Parameter(typeof(T), "x");
             var property = Expression.Property(parameter, filter.Field);
-            var value = Expression.Constant(Convert.ChangeType(filter.Value, property.Type));
 
-            Expression condition = filter.Operator switch
-            {
-                FilterOperator.Contains => Expression.Call(property,
-                    typeof(string).GetMethod("Contains", [typeof(string)])!,
-                    value),
-                FilterOperator.StartsWith => Expression.Call(property,
-                    typeof(string).GetMethod("StartsWith", [typeof(string)])!,
-                    value),
-                FilterOperator.EndsWith => Expression.Call(property,
-                    typeof(string).GetMethod("EndsWith", [typeof(string)])!,
-                    value),
-                FilterOperator.GreaterThan => Expression.GreaterThan(property, value),
-                FilterOperator.LessThan => Expression.LessThan(property, value),
-                FilterOperator.GreaterThanOrEqual => Expression.GreaterThanOrEqual(property, value),
-                FilterOperator.LessThanOrEqual => Expression.LessThanOrEqual(property, value),
-                _ => Expression.Equal(property, value)
-            };
+            Expression condition = filter.Values.Count != 0
+                ? CreateConditionFromValues(property, filter.Values, filter.Operator)
+                : CreateConditionFromUniqueValue(property, filter.Value, filter.Operator);
 
             var lambda = Expression.Lambda<Func<T, bool>>(condition, parameter);
             query = query.Where(lambda);
@@ -39,9 +24,62 @@ public static class QueryBuilder
 
         return query;
     }
-    
+
+    private static Expression CreateConditionFromUniqueValue(MemberExpression property, string filterValue, FilterOperator filterOperator)
+    {
+        object? typedValue = property.Type switch
+        {
+            _ when property.Type == typeof(Guid) => Guid.TryParse(filterValue, out Guid id) ? id : Guid.Empty,
+            _ => filterValue
+        };
+
+        var value = Expression.Constant(Convert.ChangeType(typedValue, property.Type));
+
+        Expression condition = filterOperator switch
+        {
+            FilterOperator.Contains => Expression.Call(property,
+                typeof(string).GetMethod("Contains", [typeof(string)])!,
+                value),
+            FilterOperator.StartsWith => Expression.Call(property,
+                typeof(string).GetMethod("StartsWith", [typeof(string)])!,
+                value),
+            FilterOperator.EndsWith => Expression.Call(property,
+                typeof(string).GetMethod("EndsWith", [typeof(string)])!,
+                value),
+            FilterOperator.GreaterThan => Expression.GreaterThan(property, value),
+            FilterOperator.LessThan => Expression.LessThan(property, value),
+            FilterOperator.GreaterThanOrEqual => Expression.GreaterThanOrEqual(property, value),
+            FilterOperator.LessThanOrEqual => Expression.LessThanOrEqual(property, value),
+            _ => Expression.Equal(property, value)
+        };
+
+        return condition;
+    }
+
+    private static Expression CreateConditionFromValues(MemberExpression property, ICollection<string> filterValues, FilterOperator filterOperator)
+    {
+        Expression body = null!;
+        foreach (var value in filterValues)
+        {
+            object? typedValue = property.Type switch
+            {
+                _ when property.Type == typeof(Guid) => Guid.TryParse(value, out Guid id) ? id : Guid.Empty,
+                _ => value
+            };
+
+            var constant = Expression.Constant(Convert.ChangeType(typedValue, property.Type));
+            var equals = Expression.Equal(property, constant);
+            if (body == null)
+                body = equals;
+            else
+                body = Expression.Or(body, equals);
+        }
+
+        return body;
+    }
+
     public static IQueryable<T> ApplyOrder<T>(
-        this IQueryable<T> query, 
+        this IQueryable<T> query,
         string orderByString)
     {
         if (string.IsNullOrEmpty(orderByString))
@@ -60,7 +98,7 @@ public static class QueryBuilder
             var descending = parts.Length > 1 && parts[1].Equals("desc", StringComparison.OrdinalIgnoreCase);
 
             var parameter = Expression.Parameter(typeof(T), "x");
-            
+
             var property = propertyName.Split('.')
                 .Aggregate((Expression)parameter, Expression.Property);
 

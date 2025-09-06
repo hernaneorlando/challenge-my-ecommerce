@@ -1,12 +1,12 @@
 using Common.ORMCommon;
 using SalesManagement.Domain.Entities;
 
-namespace SalesManagement.Domain.Repositories;
+namespace SalesManagement.Application.Repositories;
 
 /// <summary>
 /// Repository interface for Sale entity operations
 /// </summary>
-public interface ISaleRepository : IPaginatedRepository<Sale>
+public interface ISaleRepository : IBaseRepository<Sale>
 {
     /// <summary>
     /// Creates a new Sale in the repository

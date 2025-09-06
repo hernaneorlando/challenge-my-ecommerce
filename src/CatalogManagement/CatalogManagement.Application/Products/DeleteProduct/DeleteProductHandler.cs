@@ -1,4 +1,4 @@
-using CatalogManagement.Domain.Repositories;
+using CatalogManagement.Application.Repositories;
 using MediatR;
 
 namespace CatalogManagement.Application.Products.DeleteProduct;

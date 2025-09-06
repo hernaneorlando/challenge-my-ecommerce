@@ -1,3 +1,5 @@
+using System.Linq.Expressions;
+using Common.ORMCommon;
 using UserManagement.Domain.Entities;
 using UserManagement.Domain.Enums;
 
@@ -5,8 +7,12 @@ namespace UserManagement.Domain.Specifications;
 
 public class ActiveUserSpecification : ISpecification<User>
 {
-    public bool IsSatisfiedBy(User user)
+    public Expression<Func<User, bool>> Predicate { get; private set; }
+
+
+    public ActiveUserSpecification(string email)
     {
-        return user.Status == UserStatus.Active;
+        Predicate = user =>
+            user.Status == UserStatus.Active && user.Email == email;
     }
 }

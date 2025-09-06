@@ -1,4 +1,4 @@
-using CatalogManagement.Domain.Repositories;
+using CatalogManagement.Application.Repositories;
 using CatalogManagement.ORM.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;

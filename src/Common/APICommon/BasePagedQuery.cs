@@ -5,7 +5,7 @@ using MediatR;
 
 namespace Common.APICommon;
 
-public abstract record BasePagedQuery<TResponse> : IRequest<PaginatedResponse<TResponse>>
+public record BasePagedQuery<TResponse> : IRequest<PaginatedResponse<TResponse>>
     where TResponse : class
 {
     [JsonPropertyName("_page")]
@@ -23,37 +23,15 @@ public abstract record BasePagedQuery<TResponse> : IRequest<PaginatedResponse<TR
     public void AddFilter(string field, string value)
     {
         if (field.StartsWith("_min"))
-        {
-            Filters.Add(new FilterCriteria
-            {
-                Field = field[4..],
-                Value = value,
-                Operator = FilterOperator.GreaterThanOrEqual
-            });
-        }
+            Filters.Add(new FilterCriteria(field[4..], value, FilterOperator.GreaterThanOrEqual));
         else if (field.StartsWith("_max"))
-        {
-            Filters.Add(new FilterCriteria
-            {
-                Field = field[4..],
-                Value = value,
-                Operator = FilterOperator.LessThanOrEqual
-            });
-        }
+            Filters.Add(new FilterCriteria(field[4..], value, FilterOperator.LessThanOrEqual));
         else
-        {
             Filters.Add(FilterCriteria.Parse(field, value));
-        }
     }
 
-    public Dictionary<string, string> SanitizeFilters(Dictionary<string, string> queryParams)
+    public void AddFilter(string field, IEnumerable<string> values)
     {
-        return queryParams
-            .Where(f => !f.Key.StartsWith('_'))
-            .Where(f =>
-                f.Key != nameof(PageNumber) &&
-                f.Key != nameof(PageSize) &&
-                f.Key != nameof(OrderBy))
-            .ToDictionary(f => f.Key, f => f.Value);
+        Filters.Add(FilterCriteria.Parse(field, values));
     }
 }

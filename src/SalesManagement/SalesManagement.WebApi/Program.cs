@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Serilog;
+using System.Text.Json.Serialization;
 
 namespace SalesManagement.WebApi;
 
@@ -24,10 +25,17 @@ public class Program
             var builder = WebApplication.CreateBuilder(args);
             builder.AddDefaultLogging();
 
-            builder.Services.AddControllers();
+            builder.Services
+                .AddControllers()
+                .AddJsonOptions(options =>
+                {
+                    options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingDefault;
+                });
+                
             builder.Services.AddEndpointsApiExplorer();
 
             builder.AddBasicHealthChecks();
+            builder.AddHttpClients();
 
             builder.Services
                 .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

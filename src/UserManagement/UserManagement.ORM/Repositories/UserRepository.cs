@@ -1,14 +1,14 @@
 ﻿using Common.ORMCommon;
 using UserManagement.Domain.Entities;
-using UserManagement.Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
+using UserManagement.Application.Repositories;
 
 namespace UserManagement.ORM.Repositories;
 
 /// <summary>
 /// Implementation of IUserRepository using Entity Framework Core
 /// </summary>
-public class UserRepository : PaginatedRepository<User>, IUserRepository
+public class UserRepository : BaseRepository<User>, IUserRepository
 {
     private readonly DefaultContext _context;
 

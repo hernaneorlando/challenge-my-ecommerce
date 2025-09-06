@@ -1,8 +1,8 @@
-using CatalogManagement.Domain.Repositories;
 using Common.APICommon;
 using Common.ORMCommon;
 using AutoMapper;
 using MediatR;
+using CatalogManagement.Application.Repositories;
 
 namespace CatalogManagement.Application.Branches.GetBranches;
 

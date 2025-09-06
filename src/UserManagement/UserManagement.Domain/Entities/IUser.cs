@@ -12,6 +12,11 @@
         public string Id { get; }
 
         /// <summary>
+        /// Gets the user's full name.
+        /// </summary>
+        public string Name { get; }
+
+        /// <summary>
         /// Obtém o nome de usuário.
         /// </summary>
         /// <returns>O nome de usuário.</returns>

@@ -1,10 +1,10 @@
-﻿using UserManagement.Domain.Repositories;
-using UserManagement.ORM;
+﻿using UserManagement.ORM;
 using UserManagement.ORM.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using UserManagement.Application.Repositories;
 
 namespace UserManagement.IoC.ModuleInitializers;
 

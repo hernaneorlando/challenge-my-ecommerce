@@ -5,7 +5,7 @@ namespace CatalogManagement.Application.Products.GetProducts;
 /// </summary>
 public record GetProductsResponse
 {
-/// <summary>
+    /// <summary>
     /// The unique identifier of the created product
     /// </summary>
     public Guid Id { get; set; }

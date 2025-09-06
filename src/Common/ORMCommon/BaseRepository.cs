@@ -5,7 +5,7 @@ namespace Common.ORMCommon;
 /// <summary>
 /// Implementation of IPaginatedRepository using Entity Framework Core
 /// </summary>
-public abstract class PaginatedRepository<TEntity>(DbContext context) : IPaginatedRepository<TEntity>
+public abstract class BaseRepository<TEntity>(DbContext context) : IBaseRepository<TEntity>
     where TEntity : class
 {
     /// <summary>
@@ -30,5 +30,22 @@ public abstract class PaginatedRepository<TEntity>(DbContext context) : IPaginat
             .ToListAsync(cancellationToken);
 
         return new PaginatedList<TEntity>(items, total, request.PageNumber, request.PageSize);
+    }
+
+    /// <summary>
+    /// Retrieves an entityby a pre-defined constraint
+    /// </summary>
+    /// <param name="specification">The constraint to find the entity</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>The entity if found, null otherwise</returns>
+    public async Task<TEntity> Find(ISpecification<TEntity> specification, CancellationToken cancellationToken = default)
+    {
+        if (specification?.Predicate is null)
+            throw new ArgumentNullException("Specification must not be null and contain a valida predicate.");
+
+        var result = await context.Set<TEntity>()
+            .FirstOrDefaultAsync(specification?.Predicate!, cancellationToken);
+
+        return result!;
     }
 }

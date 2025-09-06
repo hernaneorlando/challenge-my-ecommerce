@@ -1,14 +1,14 @@
 using Common.ORMCommon;
 using Microsoft.EntityFrameworkCore;
+using SalesManagement.Application.Repositories;
 using SalesManagement.Domain.Entities;
-using SalesManagement.Domain.Repositories;
 
 namespace SalesManagement.ORM.Repositories;
 
 /// <summary>
 /// Implementation of ISaleRepository using EF Core
 /// </summary>
-public class SaleRepository : PaginatedRepository<Sale>, ISaleRepository
+public class SaleRepository : BaseRepository<Sale>, ISaleRepository
 {
 private readonly DefaultContext _context;
 

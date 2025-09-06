@@ -22,8 +22,4 @@
     <ProjectReference Include="..\SalesManagement.ORM\SalesManagement.ORM.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Features\" />
-  </ItemGroup>
-
 </Project>

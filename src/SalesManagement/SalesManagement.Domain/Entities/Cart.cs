@@ -1,5 +1,7 @@
 using Common.DomainCommon;
+using Common.Validations;
 using SalesManagement.Domain.Enums;
+using SalesManagement.Domain.Validations;
 
 namespace SalesManagement.Domain.Entities;
 
@@ -37,4 +39,62 @@ public class Cart : BaseEntity
     /// Gets or sets the cart items.
     /// </summary>
     public ICollection<CartItem> Items { get; set; } = [];
+
+    /// <summary>
+    /// Performs validation of the cart entity using the CartValidator rules.
+    /// </summary>
+    /// <returns>
+    /// A <see cref="ValidationResultDetail"/> containing:
+    /// - IsValid: Indicates whether all validation rules passed
+    /// - Errors: Collection of validation errors if any rules failed
+    /// </returns>
+    /// <remarks>
+    /// <listheader>The validation includes checking:</listheader>
+    /// <list type="bullet">Cartname format and length</list>
+    /// <list type="bullet">Email format</list>
+    /// <list type="bullet">Phone number format</list>
+    /// <list type="bullet">Password complexity requirements</list>
+    /// <list type="bullet">Role validity</list>
+    /// 
+    /// </remarks>
+    public ValidationResultDetail Validate()
+    {
+        var validator = new CartValidator();
+        var result = validator.Validate(this);
+        return new ValidationResultDetail
+        {
+            IsValid = result.IsValid,
+            Errors = result.Errors.Select(o => (ValidationErrorDetail)o)
+        };
+    }
+
+    public void Create(SaleUser customer, SaleBranch branch)
+    {
+        Customer ??= new SaleUser { Id = customer.Id };
+        Customer.Name = customer.Name;
+
+        Branch ??= new SaleBranch { Id = branch.Id };
+        Branch.Code = branch.Code;
+        Branch.Name = branch.Name;
+
+        Status = CartStatus.Open;
+    }
+
+    public void AddItem(CartItem item)
+    {
+        var existentItem = Items.FirstOrDefault(i => i.ProductId == item.ProductId);
+        if (existentItem is not null)
+        {
+            existentItem.Cart = this;
+            existentItem.CartId = Id;
+            existentItem.SupplierId = item.SupplierId;
+            existentItem.UnitPrice = item.UnitPrice;
+        }
+        else
+        {
+            item.Cart = this;
+            item.CartId = Id;
+            Items.Add(item);
+        }
+    }
 }

@@ -72,15 +72,10 @@ public class ProductsController(IMediator mediator) : Controller
     [HttpGet]
     [ProducesResponseType(typeof(PaginatedResponse<GetProductsResponse>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetProducts(
-        [FromQuery] GetProductsQuery query,
-        [FromQuery] Dictionary<string, string> filters,
+        [FromQuery] QueryStringWithFilters<GetProductsQuery, GetProductsResponse> filters,
         CancellationToken cancellationToken)
     {
-        foreach (var filter in query.SanitizeFilters(filters))
-        {
-            query.AddFilter(filter.Key, filter.Value);
-        }
-
+        var query = filters.GetQuery();
         return Ok(await mediator.Send(query, cancellationToken));
     }
 

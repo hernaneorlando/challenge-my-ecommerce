@@ -9,27 +9,27 @@ namespace SalesManagement.Domain.Entities;
 public class CartItem : BaseEntity
 {
     /// <summary>
-    /// Gets or sets the cart's product Id.
+    /// Gets or sets the cart item's product Id.
     /// </summary>
     public Guid ProductId { get; set; }
 
     /// <summary>
-    /// Gets or sets the cart's supplier Id.
+    /// Gets or sets the cart item's supplier Id.
     /// </summary>
     public Guid SupplierId { get; set; }
 
     /// <summary>
-    /// Gets or sets the cart's quantity.
+    /// Gets or sets the cart item's quantity.
     /// </summary>
     public int Quantity { get; set; }
 
     /// <summary>
-    /// Gets or sets the cart's unit price.
+    /// Gets or sets the cart item's unit price.
     /// </summary>
     public decimal UnitPrice { get; set; }
 
     /// <summary>
-    /// Gets or sets the cart's discount.
+    /// Gets or sets the cart item's discount.
     /// </summary>
     public decimal Discount { get; set; }
 

@@ -8,6 +8,11 @@ public record GetBranchByIdResponse
     public Guid Id { get; set; }
 
     /// <summary>
+    /// Gets or sets the branch's name.
+    /// </summary>
+    public string Name { get; set; } = string.Empty;
+
+    /// <summary>
     /// Gets or sets the branch's code.
     /// </summary>
     public string Code { get; set; } = string.Empty;

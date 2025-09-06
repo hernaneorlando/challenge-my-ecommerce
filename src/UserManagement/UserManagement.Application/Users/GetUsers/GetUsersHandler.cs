@@ -1,8 +1,8 @@
 using Common.APICommon;
 using Common.ORMCommon;
-using UserManagement.Domain.Repositories;
 using AutoMapper;
 using MediatR;
+using UserManagement.Application.Repositories;
 
 namespace UserManagement.Application.Users.GetUsers;
 
