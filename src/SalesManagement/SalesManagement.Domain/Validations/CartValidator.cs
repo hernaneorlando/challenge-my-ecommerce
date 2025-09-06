@@ -14,19 +14,7 @@ public class CartValidator : AbstractValidator<Cart>
 
         RuleFor(c => c.Items).NotEmpty();
         RuleForEach(c => c.Items)
-            .ChildRules(item =>
-            {
-                item.RuleFor(i => i.ProductId)
-                    .NotNull().NotEqual(Guid.Empty)
-                    .WithMessage("Product must be provided to the item.");
-
-                item.RuleFor(i => i.SupplierId)
-                    .NotNull().NotEqual(Guid.Empty)
-                    .WithMessage("Supplier must be provided to the item.");
-
-                item.RuleFor(i => i.Quantity).GreaterThan(0);
-                item.RuleFor(i => i.UnitPrice).GreaterThan(0);
-            });
+            .SetValidator(new CartItemValidator());
 
         When(c => c.CheckoutDate is not null, () =>
         {

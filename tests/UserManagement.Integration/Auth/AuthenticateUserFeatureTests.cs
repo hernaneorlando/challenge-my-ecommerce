@@ -70,11 +70,10 @@ public class AuthenticateUserFeatureTests(WebApplicationFactory<Program> factory
         await dbContext.SaveChangesAsync();
 
         var client = _webFactory.CreateClient();
-        var invalidUser = AuthenticateUserFeatureTestData.GenerateValidUser();
         var request = new
         {
-            Email = invalidUser.Email,
-            Password = invalidUser.Password
+            Email = existentUser.Email,
+            Password = AuthenticateUserFeatureTestData.GeneratePassword()
         };
 
         // When
@@ -87,11 +86,10 @@ public class AuthenticateUserFeatureTests(WebApplicationFactory<Program> factory
         Assert.False(apiResponseData.Success);
         Assert.Equal("Authentication Failed", apiResponseData.Message);
         Assert.Single(apiResponseData.Errors);
-        Assert.Collection(apiResponseData.Errors,
-        detail =>
+        Assert.Collection(apiResponseData.Errors, errorDetail =>
         {
-            Assert.Equal("Unauthorized", detail.Error);
-            Assert.Equal("Invalid credentials", detail.Detail);
+            Assert.Equal("Unauthorized", errorDetail.Error);
+            Assert.Equal("Invalid credentials", errorDetail.Detail);
         });
     }
 

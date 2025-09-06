@@ -97,4 +97,17 @@ public class Cart : BaseEntity
             Items.Add(item);
         }
     }
+
+    public void ApplyDiscount()
+    {
+        foreach (var item in Items)
+        {
+            item.Discount = item.Quantity switch
+            {
+                _ when item.Quantity >= 4 && item.Quantity < 10 => 0.1M,
+                _ when item.Quantity >= 10 && item.Quantity < 20 => 0.2M,
+                _ => 0.0M
+            };
+        }
+    }
 }

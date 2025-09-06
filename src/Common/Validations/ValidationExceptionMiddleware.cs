@@ -2,6 +2,8 @@
 using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Http;
+using Serilog;
+using System.Security.Authentication.ExtendedProtection;
 using System.Text.Json;
 
 namespace Common.Validations;
@@ -14,7 +16,7 @@ public class ValidationExceptionMiddleware
     };
 
     private readonly RequestDelegate _next;
-    
+
 
     public ValidationExceptionMiddleware(RequestDelegate next)
     {
@@ -27,48 +29,46 @@ public class ValidationExceptionMiddleware
         {
             await _next(context);
         }
-        catch (UnauthorizedAccessException ex)
+        catch (Exception ex)
         {
-            await HandleUnauthorizedAccessExceptionAsync(context, ex);
-        }
-        catch (KeyNotFoundException ex)
-        {
-            await HandleValidationExceptionAsync(context, new ValidationException([new ValidationFailure("Id", ex.Message)]));
-        }
-        catch (ValidationException ex)
-        {
-            await HandleValidationExceptionAsync(context, ex);
+            var message = ex switch
+            {
+                UnauthorizedAccessException unauthorizedAccessException => await HandleUnauthorizedAccessExceptionAsync(context, unauthorizedAccessException),
+                KeyNotFoundException _ => await HandleValidationExceptionAsync(context, new ValidationException([new ValidationFailure("Id", ex.Message)])),
+                ValidationException validationException => await HandleValidationExceptionAsync(context, validationException),
+                _ => await HandleExceptionAsync(context, StatusCodes.Status500InternalServerError, "Server error", [new ValidationErrorDetail(ex.Message, ex.StackTrace!)])
+            };
+
+            Log.Error(message);
         }
     }
 
-    private static Task HandleUnauthorizedAccessExceptionAsync(HttpContext context, UnauthorizedAccessException exception)
+    private static async Task<string> HandleUnauthorizedAccessExceptionAsync(HttpContext context, UnauthorizedAccessException exception)
+    {
+        var error = new ValidationErrorDetail("Unauthorized", exception.Message);
+        await HandleExceptionAsync(context, StatusCodes.Status401Unauthorized, "Authentication Failed", [error]);
+        return exception.Message;
+    }
+
+    private static Task<string> HandleValidationExceptionAsync(HttpContext context, ValidationException exception)
+    {
+        var errors = exception.Errors.Select(error => (ValidationErrorDetail)error);
+        return HandleExceptionAsync(context, StatusCodes.Status400BadRequest, "Validation Failed", [.. errors]);
+    }
+    
+    private static async Task<string> HandleExceptionAsync(HttpContext context, int statusCode, string message, ICollection<ValidationErrorDetail> errors)
     {
         context.Response.ContentType = "application/json";
-        context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+        context.Response.StatusCode = statusCode;
 
         var response = new ApiResponse
         {
             Success = false,
-            Message = "Authentication Failed",
-            Errors = [new ValidationErrorDetail("Unauthorized", exception.Message)]
+            Message = message,
+            Errors = errors
         };
 
-        return context.Response.WriteAsync(JsonSerializer.Serialize(response, _jsonSerializerOptions));
-    }
-
-    private static Task HandleValidationExceptionAsync(HttpContext context, ValidationException exception)
-    {
-        context.Response.ContentType = "application/json";
-        context.Response.StatusCode = StatusCodes.Status400BadRequest;
-
-        var response = new ApiResponse
-        {
-            Success = false,
-            Message = "Validation Failed",
-            Errors = exception.Errors
-                .Select(error => (ValidationErrorDetail)error)
-        };
-
-        return context.Response.WriteAsync(JsonSerializer.Serialize(response, _jsonSerializerOptions));
+        await context.Response.WriteAsync(JsonSerializer.Serialize(response, _jsonSerializerOptions));
+        return string.Join($";{Environment.CommandLine}", errors.Select(e => $"{e.Error} - {e.Detail}"));
     }
 }
