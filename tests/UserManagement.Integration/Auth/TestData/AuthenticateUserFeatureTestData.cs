@@ -42,6 +42,15 @@ public static class AuthenticateUserFeatureTestData
     }
 
     /// <summary>
+    /// Generates a valid password.
+    /// </summary>
+    /// <returns>A valid password hash.</returns>
+    public static string GeneratePassword()
+    {
+        return $"Test@{new Random().Next(100, 1000)}";
+    }
+
+    /// <summary>
     /// Generates a valid password hash.
     /// </summary>
     /// <param name="password">Password to generate the hash.</param>

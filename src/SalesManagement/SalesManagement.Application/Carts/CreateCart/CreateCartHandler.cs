@@ -46,6 +46,7 @@ public class CreateCartHandler(
             cart.AddItem(item);
         }
 
+        cart.ApplyDiscount();
         var validationResult = cart.Validate();
         if (!validationResult.IsValid)
         {
