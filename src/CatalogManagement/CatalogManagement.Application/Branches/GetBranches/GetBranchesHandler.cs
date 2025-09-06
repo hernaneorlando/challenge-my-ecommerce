@@ -9,7 +9,7 @@ namespace CatalogManagement.Application.Branches.GetBranches;
 /// <summary>
 /// Handler for processing GetBranchesQuery requests
 /// </summary>
-public class GetBranchesHandler(ISupplierRepository repository, IMapper mapper) : IRequestHandler<GetBranchesQuery, PaginatedResponse<GetBranchesResponse>>
+public class GetBranchesHandler(IBranchRepository repository, IMapper mapper) : IRequestHandler<GetBranchesQuery, PaginatedResponse<GetBranchesResponse>>
 {
     /// <summary>
     /// Handles the GetBranchesQuery request

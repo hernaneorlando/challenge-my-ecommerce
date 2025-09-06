@@ -14,19 +14,21 @@ public class QueryStringWithFilters<TQuery, TResponse> : Dictionary<string, List
 
         if (ContainsKey(PageNumberKey) || ContainsKey(nameof(BasePagedQuery<TResponse>.PageNumber)))
         {
-            query.PageNumber = int.TryParse(this[PageNumberKey].FirstOrDefault(), out int page) ? page : 0;
+            var value = SanitizeValues(this[PageNumberKey].FirstOrDefault()!);
+            query.PageNumber = int.TryParse(value, out int page) ? page : 0;
             Remove(PageNumberKey);
         }
 
         if (ContainsKey(PageSizeKey) || ContainsKey(nameof(BasePagedQuery<TResponse>.PageSize)))
         {
-            query.PageSize = int.TryParse(this[PageSizeKey].FirstOrDefault(), out int page) ? page : 0;
+            var value = SanitizeValues(this[PageSizeKey].FirstOrDefault()!);
+            query.PageSize = int.TryParse(value, out int page) ? page : 0;
             Remove(PageSizeKey);
         }
 
         if (ContainsKey(OrderByKey) || ContainsKey(nameof(BasePagedQuery<TResponse>.OrderBy)))
         {
-            query.OrderBy = this[OrderByKey].FirstOrDefault()!;
+            query.OrderBy = SanitizeValues(this[OrderByKey].FirstOrDefault()!);
             Remove(OrderByKey);
         }
 
@@ -34,11 +36,19 @@ public class QueryStringWithFilters<TQuery, TResponse> : Dictionary<string, List
         {
             var values = this[key];
             if (values.Count > 1)
-                query.AddFilter(key, values);
+                query.AddFilter(key, values.Select(SanitizeValues));
             else
-                query.AddFilter(key, values.First());
+                query.AddFilter(key, SanitizeValues(values.First()));
         }
 
         return query;
+    }
+
+    private static string SanitizeValues(string value)
+    {
+        // Just for swagger context
+        return value
+            .Replace("[\"", string.Empty)
+            .Replace("\"]", string.Empty);
     }
 }
