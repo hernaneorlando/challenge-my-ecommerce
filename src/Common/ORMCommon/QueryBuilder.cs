@@ -27,12 +27,7 @@ public static class QueryBuilder
 
     private static Expression CreateConditionFromUniqueValue(MemberExpression property, string filterValue, FilterOperator filterOperator)
     {
-        object? typedValue = property.Type switch
-        {
-            _ when property.Type == typeof(Guid) => Guid.TryParse(filterValue, out Guid id) ? id : Guid.Empty,
-            _ => filterValue
-        };
-
+        object? typedValue = GetTypeValue(property, filterValue);
         var value = Expression.Constant(Convert.ChangeType(typedValue, property.Type));
 
         Expression condition = filterOperator switch
@@ -61,12 +56,7 @@ public static class QueryBuilder
         Expression body = null!;
         foreach (var value in filterValues)
         {
-            object? typedValue = property.Type switch
-            {
-                _ when property.Type == typeof(Guid) => Guid.TryParse(value, out Guid id) ? id : Guid.Empty,
-                _ => value
-            };
-
+            object? typedValue = GetTypeValue(property, value);
             var constant = Expression.Constant(Convert.ChangeType(typedValue, property.Type));
             var equals = Expression.Equal(property, constant);
             if (body == null)
@@ -76,6 +66,16 @@ public static class QueryBuilder
         }
 
         return body;
+    }
+
+    private static object? GetTypeValue(MemberExpression property, string value)
+    {
+        return property.Type switch
+        {
+            _ when property.Type == typeof(Guid) => Guid.TryParse(value, out Guid id) ? id : Guid.Empty,
+            _ when property.Type.IsEnum => Enum.TryParse(property.Type, value, out object? enumValue) ? enumValue : null,
+            _ => value
+        };
     }
 
     public static IQueryable<T> ApplyOrder<T>(
