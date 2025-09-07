@@ -3,13 +3,10 @@ using FluentValidation;
 namespace SalesManagement.Application.Carts.GetCartById;
 
 /// <summary>
-/// Validator for GetCartByIdCommand
+/// Validator for GetCartByIdQuery
 /// </summary>
 public class GetCartByIdValidator : AbstractValidator<GetCartByIdQuery>
 {
-    /// <summary>
-    /// Initializes validation rules for GetCartByIdCommand
-    /// </summary>
     public GetCartByIdValidator()
     {
         RuleFor(x => x.Id)
