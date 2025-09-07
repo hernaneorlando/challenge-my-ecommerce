@@ -2,6 +2,7 @@ using Common.DomainCommon;
 using Common.Validations;
 using FluentValidation;
 using FluentValidation.Results;
+using SalesManagement.Domain.Common;
 using SalesManagement.Domain.Enums;
 using SalesManagement.Domain.Validations;
 
@@ -119,14 +120,6 @@ public class Cart : BaseEntity
 
     public void ApplyDiscount()
     {
-        foreach (var item in Items)
-        {
-            item.Discount = item.Quantity switch
-            {
-                _ when item.Quantity >= 4 && item.Quantity < 10 => 0.1M,
-                _ when item.Quantity >= 10 && item.Quantity < 20 => 0.2M,
-                _ => 0.0M
-            };
-        }
+        DiscountCalculationHelper.CalculateDiscount(Items);
     }
 }

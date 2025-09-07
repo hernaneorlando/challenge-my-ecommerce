@@ -2,6 +2,7 @@ using Common.DomainCommon;
 using Common.Validations;
 using FluentValidation;
 using FluentValidation.Results;
+using SalesManagement.Domain.Common;
 using SalesManagement.Domain.Enums;
 using SalesManagement.Domain.Validations;
 
@@ -23,7 +24,7 @@ public class Sale : BaseEntity
     /// Gets or sets the date when the sale was made.
     /// Must not be null.
     /// </summary>
-    public DateTime? Date { get; set; }
+    public DateOnly? Date { get; set; }
 
     /// <summary>
     /// Gets or sets the branch's information.
@@ -79,13 +80,43 @@ public class Sale : BaseEntity
 
     public void Create()
     {
-        if (Date is not null)
-            throw new ValidationException([new ValidationFailure(string.Empty, "The sale is already completed.")]);
+        if (Status != SaleStatus.Pending || Date is not null)
+            throw new ValidationException([new ValidationFailure(string.Empty, "The sale has already been completed or canceled.")]);
 
         Number = GenerateSaleNumber();
         TotalAmount = Items.Sum(item => item.TotalAmount);
         Status = SaleStatus.Pending;
         UpdatedAt = null;
+    }
+
+    public void Update(ICollection<SaleItem> saleItems, DateOnly? date = null, bool isToCancel = false)
+    {
+        if (Status != SaleStatus.Pending || Date is not null)
+            throw new ValidationException([new ValidationFailure(string.Empty, $"The sale has already been completed or canceled.")]);
+
+        Items.Clear();
+        DiscountCalculationHelper.CalculateDiscount(saleItems);
+        foreach (var item in saleItems)
+        {
+            item.Sale = this;
+            item.SaleId = Id;
+            item.TotalAmount = CalculateItemTotalAmount(item);
+        }
+
+        Items = saleItems;
+
+        if (date is not null)
+        {
+            Date = date;
+            Status = SaleStatus.Completed;
+        }
+        else if (isToCancel)
+        {
+            date = null;
+            Status = SaleStatus.Cancelled;
+        }
+
+        UpdatedAt = DateTime.UtcNow;
     }
 
     public void AddItem(SaleProduct product, SaleSupplier supplier)

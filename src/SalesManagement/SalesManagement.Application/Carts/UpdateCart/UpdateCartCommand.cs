@@ -35,7 +35,7 @@ public record UpdateCartCommand : IRequest<UpdateCartResponse>
     /// </summary>
     public DateOnly? CheckoutDate { get; set; }
 
-public ICollection<UpdateCartItemCommand> Products { get; set; } = [];
+    public ICollection<UpdateCartItemCommand> Products { get; set; } = [];
 }
 
 public record UpdateCartItemCommand

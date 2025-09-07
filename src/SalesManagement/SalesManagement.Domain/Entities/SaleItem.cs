@@ -1,4 +1,5 @@
 using Common.DomainCommon;
+using SalesManagement.Domain.Common;
 
 namespace SalesManagement.Domain.Entities;
 
@@ -6,7 +7,7 @@ namespace SalesManagement.Domain.Entities;
 /// Represents a Sale Item in the system.
 /// This entity follows domain-driven design principles and includes business rules validation.
 /// </summary>
-public class SaleItem : BaseEntity
+public class SaleItem : BaseEntity, IItemWithDiscount
 {
     /// <summary>
     /// Gets or sets the product's information.
@@ -53,4 +54,14 @@ public class SaleItem : BaseEntity
     /// Gets or sets the sale associated with this item.
     /// </summary>
     public Sale Sale { get; set; } = null!;
+
+    public void Update(SaleProduct product, SaleSupplier supplier, int quantity, decimal unitPrice)
+    {
+        Product = product;
+        Supplier = supplier;
+        Quantity = quantity;
+        UnitPrice = unitPrice;
+
+        UpdatedAt = DateTime.UtcNow;
+    }
 }
