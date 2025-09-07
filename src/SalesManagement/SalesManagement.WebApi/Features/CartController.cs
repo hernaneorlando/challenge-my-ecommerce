@@ -17,7 +17,7 @@ namespace SalesManagement.WebApi.Features;
 [Authorize]
 [ApiController]
 [Route("api/carts")]
-public class CartController(IMediator mediator) : Controller
+public class CartController(IMediator _mediator) : Controller
 {
     /// <summary>
     /// Creates a new cart
@@ -30,7 +30,7 @@ public class CartController(IMediator mediator) : Controller
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CreateCart([FromBody] CreateCartCommand request, CancellationToken cancellationToken)
     {
-        var response = await mediator.Send(request, cancellationToken);
+        var response = await _mediator.Send(request, cancellationToken);
 
         return Created(string.Empty, new ApiResponseWithData<CreateCartResponse>
         {
@@ -53,7 +53,7 @@ public class CartController(IMediator mediator) : Controller
     public async Task<IActionResult> GetCartById([FromRoute] Guid id, CancellationToken cancellationToken)
     {
         var command = new GetCartByIdQuery(id);
-        var response = await mediator.Send(command, cancellationToken);
+        var response = await _mediator.Send(command, cancellationToken);
 
         return Ok(new ApiResponseWithData<GetCartByIdResponse>
         {
@@ -77,7 +77,7 @@ public class CartController(IMediator mediator) : Controller
         CancellationToken cancellationToken)
     {
         var query = filters.GetQuery();
-        return Ok(await mediator.Send(query, cancellationToken));
+        return Ok(await _mediator.Send(query, cancellationToken));
     }
 
     /// <summary>
@@ -93,7 +93,7 @@ public class CartController(IMediator mediator) : Controller
     public async Task<IActionResult> UpdateCart(Guid id, [FromBody] UpdateCartCommand request, CancellationToken cancellationToken)
     {
         request.Id = id;
-        var response = await mediator.Send(request, cancellationToken);
+        var response = await _mediator.Send(request, cancellationToken);
 
         return Ok(new ApiResponseWithData<UpdateCartResponse>
         {
@@ -116,7 +116,7 @@ public class CartController(IMediator mediator) : Controller
     public async Task<IActionResult> DeleteCart([FromRoute] Guid id, CancellationToken cancellationToken)
     {
         var command = new DeleteCartCommand(id);
-        await mediator.Send(command, cancellationToken);
+        await _mediator.Send(command, cancellationToken);
 
         return Ok(new ApiResponse
         {
@@ -139,7 +139,7 @@ public class CartController(IMediator mediator) : Controller
     public async Task<IActionResult> DeleteCartItem([FromRoute] Guid cartId, Guid itemId, CancellationToken cancellationToken)
     {
         var command = new DeleteCartItemCommand(cartId, itemId);
-        await mediator.Send(command, cancellationToken);
+        await _mediator.Send(command, cancellationToken);
 
         return Ok(new ApiResponse
         {

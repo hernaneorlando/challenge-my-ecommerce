@@ -31,7 +31,6 @@ public class CreateCartProfile : Profile
             .ForMember(c => c.UnitPrice, opt => opt.MapFrom(p => p.Price))
             .ForMember(c => c.Id, opt => opt.Ignore());
 
-        CreateMap<CartItem, CreateCartItemResponse>();
         CreateMap<Cart, CreateCartResponse>()
             .ForMember(r => r.CustomerId, opt => opt.MapFrom(c => c.Customer.Id))
             .ForMember(r => r.BranchId, opt => opt.MapFrom(c => c.Branch.Id))

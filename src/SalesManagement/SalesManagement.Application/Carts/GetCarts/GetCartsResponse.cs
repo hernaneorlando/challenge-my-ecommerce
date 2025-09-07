@@ -1,3 +1,4 @@
+using SalesManagement.Application.Carts.Common;
 using SalesManagement.Domain.Enums;
 
 namespace SalesManagement.Application.Carts.GetCarts;
@@ -44,33 +45,5 @@ public record GetCartsResponse
     /// <summary>
     /// Gets or sets the cart items.
     /// </summary>
-    public IReadOnlyCollection<GetCartsCartItemResponse> Products { get; set; } = [];
-}
-
-public record GetCartsCartItemResponse
-{
-    /// <summary>
-    /// Gets or Sets the cart item's product Id.
-    /// </summary>
-    public Guid ProductId { get; set; }
-
-    /// <summary>
-    /// Gets or sets the cart item's supplier Id.
-    /// </summary>
-    public Guid SupplierId { get; set; }
-
-    /// <summary>
-    /// Gets or Sets the cart item's quantity.
-    /// </summary>
-    public int Quantity { get; set; }
-
-    /// <summary>
-    /// Gets or sets the cart item's unit price.
-    /// </summary>
-    public decimal UnitPrice { get; set; }
-
-    /// <summary>
-    /// Gets or sets the cart item's discount.
-    /// </summary>
-    public decimal Discount { get; set; }
+    public IReadOnlyCollection<CartItemResponse> Products { get; set; } = [];
 }

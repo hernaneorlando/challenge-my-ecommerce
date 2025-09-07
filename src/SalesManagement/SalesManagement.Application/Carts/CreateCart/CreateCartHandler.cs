@@ -23,7 +23,7 @@ public class CreateCartHandler(
     /// </summary>
     /// <param name="command">The CreateCart command</param>
     /// <param name="cancellationToken">Cancellation token</param>
-    /// <returns>The created branch details</returns>
+    /// <returns>The created cart details</returns>
     public async Task<CreateCartResponse> Handle(CreateCartCommand request, CancellationToken cancellationToken)
     {
         var userDto = await _userService.GetUserDetailsAsync(request.CustomerId);

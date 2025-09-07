@@ -1,6 +1,6 @@
 namespace SalesManagement.Domain.Enums;
 
-public enum SaleEnum
+public enum SaleStatus
 {
     Pending,
     Completed,
