@@ -53,6 +53,6 @@ public class SaleItemConfiguration : IEntityTypeConfiguration<SaleItem>
         builder.HasOne(s => s.Sale)
             .WithMany(s => s.Items)
             .HasForeignKey(s => s.SaleId)
-            .OnDelete(DeleteBehavior.NoAction);
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

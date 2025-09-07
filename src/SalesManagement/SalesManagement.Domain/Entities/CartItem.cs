@@ -1,4 +1,5 @@
 using Common.DomainCommon;
+using SalesManagement.Domain.Common;
 
 namespace SalesManagement.Domain.Entities;
 
@@ -6,7 +7,7 @@ namespace SalesManagement.Domain.Entities;
 /// Represents a Cart Item in the system.
 /// This entity follows domain-driven design principles and includes business rules validation.
 /// </summary>
-public class CartItem : BaseEntity
+public class CartItem : BaseEntity, IItemWithDiscount
 {
     /// <summary>
     /// Gets or sets the cart item's product Id.

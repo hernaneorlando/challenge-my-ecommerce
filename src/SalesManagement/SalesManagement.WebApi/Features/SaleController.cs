@@ -6,6 +6,7 @@ using SalesManagement.Application.Sales.CreateSale;
 using SalesManagement.Application.Sales.DeleteSale;
 using SalesManagement.Application.Sales.GetSaleById;
 using SalesManagement.Application.Sales.GetSales;
+using SalesManagement.Application.Sales.UpdateSale;
 
 namespace SalesManagement.WebApi.Features;
 
@@ -76,6 +77,29 @@ public class SaleController(IMediator _mediator) : Controller
     {
         var query = filters.GetQuery();
         return Ok(await _mediator.Send(query, cancellationToken));
+    }
+
+    /// <summary>
+    /// Update a sale
+    /// </summary>
+    /// <param name="request">The sale update request</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>The updated sale details</returns>
+    [HttpPut("{id}")]
+    [ProducesResponseType(typeof(ApiResponseWithData<UpdateSaleResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> UpdateSale(Guid id, [FromBody] UpdateSaleCommand request, CancellationToken cancellationToken)
+    {
+        request.Id = id;
+        var response = await _mediator.Send(request, cancellationToken);
+
+        return Ok(new ApiResponseWithData<UpdateSaleResponse>
+        {
+            Success = true,
+            Message = "Product updated successfully",
+            Data = response
+        });
     }
 
     /// <summary>
