@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 
 namespace Common.ORMCommon;
@@ -45,6 +46,31 @@ public abstract class BaseRepository<TEntity>(DbContext context) : IBaseReposito
 
         var result = await context.Set<TEntity>()
             .FirstOrDefaultAsync(specification?.Predicate!, cancellationToken);
+
+        return result!;
+    }
+
+    /// <summary>
+    /// Retrieves an entityby a pre-defined constraint
+    /// </summary>
+    /// <param name="specification">The constraint to find the entity</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>The entity if found, null otherwise</returns>
+    public async Task<TEntity> Find<TProperty>(ISpecification<TEntity> specification, CancellationToken cancellationToken = default, params Expression<Func<TEntity, TProperty>>[] includes)
+    {
+        if (specification?.Predicate is null)
+            throw new ArgumentNullException("Specification must not be null and contain a valida predicate.");
+
+        IQueryable<TEntity> query = context.Set<TEntity>();
+        if (includes.Length != 0)
+        {
+            foreach (var include in includes)
+            {
+                query = query.Include(include);
+            }
+        }
+
+        var result = await query.FirstOrDefaultAsync(specification?.Predicate!, cancellationToken);
 
         return result!;
     }

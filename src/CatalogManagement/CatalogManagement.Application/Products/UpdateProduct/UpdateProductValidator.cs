@@ -12,6 +12,9 @@ public class UpdateProductValidator : AbstractValidator<UpdateProductCommand>
     /// </summary>
     public UpdateProductValidator()
     {
+        RuleFor(c => c.Id)
+            .NotEqual(Guid.Empty).WithMessage("Product ID must be a valid GUID.");
+
         RuleFor(product => product.Title).NotEmpty();
         RuleFor(product => product.Price)
             .GreaterThan(0).WithMessage("Price must be greater than zero.");
