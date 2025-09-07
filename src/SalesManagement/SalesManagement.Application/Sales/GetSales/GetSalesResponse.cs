@@ -1,12 +1,12 @@
 using SalesManagement.Application.Sales.Common;
 using SalesManagement.Domain.Enums;
 
-namespace SalesManagement.Application.Sales.CreateSale;
+namespace SalesManagement.Application.Sales.GetSales;
 
 /// <summary>
-/// API response model for CreateSale operation
+/// API response model for GetSales operation
 /// </summary>
-public record CreateSaleResponse
+public record class GetSalesResponse
 {
     /// <summary>
     /// Gets or sets the unique identifier for the sale.

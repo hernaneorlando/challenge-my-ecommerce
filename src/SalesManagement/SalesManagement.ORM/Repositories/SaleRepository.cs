@@ -42,7 +42,9 @@ private readonly DefaultContext _context;
     /// <returns>The Sale if found, null otherwise</returns>
     public async Task<Sale?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        return await _context.Sales.FirstOrDefaultAsync(c => c.Id == id, cancellationToken);
+        return await _context.Sales
+            .Include(s => s.Items)
+            .FirstOrDefaultAsync(s => s.Id == id, cancellationToken);
     }
 
     /// <summary>
