@@ -26,12 +26,15 @@ public class Program
             builder.AddDefaultLogging();
 
             builder.Services
-                .AddControllers()
+                .AddControllers(options =>
+                {
+                    options.Filters.Add<ValidationExceptionFilter>();
+                })
                 .AddJsonOptions(options =>
                 {
                     options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingDefault;
                 });
-                
+
             builder.Services.AddEndpointsApiExplorer();
 
             builder.AddBasicHealthChecks();
@@ -97,7 +100,6 @@ public class Program
             });
 
             var app = builder.Build();
-            app.UseMiddleware<ValidationExceptionMiddleware>();
 
             if (app.Environment.IsDevelopment())
             {

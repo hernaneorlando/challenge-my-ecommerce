@@ -1,4 +1,3 @@
-using System;
 using CatalogManagement.Unit.Domain.Entities.TestData;
 using Common.Validations;
 using Tests.Common;
