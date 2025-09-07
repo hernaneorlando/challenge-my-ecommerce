@@ -11,10 +11,10 @@ namespace CatalogManagement.Unit.Domain.Entities;
 public class SupplierTests
 {
     /// <summary>
-    /// Tests that when an active user is suspended, their status changes to Suspended.
+    /// Tests the update of a supplier.
     /// </summary>
-    [Fact(DisplayName = "User status should change to Suspended when suspended")]
-    public void Given_ActiveUser_When_Suspended_Then_StatusShouldBeSuspended()
+    [Fact(DisplayName = "Supplier should get the new property values when updated")]
+    public void Given_ASupplier_When_Updated_Then_GetTheNewPropertyValues()
     {
         // Arrange
         const string newPhone = "+55 11 91234-5678";

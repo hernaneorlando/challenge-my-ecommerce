@@ -19,7 +19,11 @@ public class Program
             var builder = WebApplication.CreateBuilder(args);
             builder.AddDefaultLogging();
 
-            builder.Services.AddControllers();
+            builder.Services.AddControllers(options =>
+            {
+                options.Filters.Add<ValidationExceptionFilter>();
+            });
+            
             builder.Services.AddEndpointsApiExplorer();
 
             builder.AddBasicHealthChecks();
@@ -56,7 +60,6 @@ public class Program
             builder.Services.AddAutoMapper(typeof(Program).Assembly, typeof(ApplicationLayer).Assembly);
 
             var app = builder.Build();
-            app.UseMiddleware<ValidationExceptionMiddleware>();
 
             if (app.Environment.IsDevelopment())
             {

@@ -7,7 +7,7 @@ using Xunit;
 
 namespace Tests.Common.ApiTests;
 
-public abstract class BaseApiTests<TProgram, TDbContext> : IClassFixture<WebApplicationFactory<TProgram>>, IDisposable
+public abstract class BaseApiTests<TProgram, TDbContext> : IClassFixture<CustomWebApplicationFactory<TProgram>>, IDisposable
     where TProgram : class
     where TDbContext : DbContext
 {
@@ -26,9 +26,13 @@ public abstract class BaseApiTests<TProgram, TDbContext> : IClassFixture<WebAppl
                 {
                     options.UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString());
                 }, ServiceLifetime.Singleton);
+
+                ChangeServices(services);
             });
         });
     }
+
+    protected abstract void ChangeServices(IServiceCollection services);
 
     public void Dispose()
     {

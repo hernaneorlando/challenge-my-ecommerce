@@ -6,14 +6,15 @@ using UserManagement.Domain.Enums;
 using UserManagement.Integration.Auth.TestData;
 using UserManagement.ORM;
 using UserManagement.WebApi;
-using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 
 namespace UserManagement.Integration.Auth;
 
-public class AuthenticateUserFeatureTests(WebApplicationFactory<Program> factory) : BaseApiTests<Program, DefaultContext>(factory)
+public class AuthenticateUserFeatureTests(CustomWebApplicationFactory<Program> factory) : BaseApiTests<Program, DefaultContext>(factory)
 {
+    protected override void ChangeServices(IServiceCollection services) { }
+
     [Fact]
     public async Task AuthenticateUser_ValidUser_ReturnSuccess()
     {
