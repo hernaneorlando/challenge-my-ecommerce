@@ -6,7 +6,7 @@ namespace SalesManagement.Application.Carts.DeleteCart;
 /// <summary>
 /// Handler for processing DeleteCartCommand requests
 /// </summary>
-public class DeleteCartHandler(ICartRepository repository) : IRequestHandler<DeleteCartCommand>
+public class DeleteCartHandler(ICartRepository _cartRepository) : IRequestHandler<DeleteCartCommand>
 {
     /// <summary>
     /// Handles the DeleteCartCommand request
@@ -15,7 +15,7 @@ public class DeleteCartHandler(ICartRepository repository) : IRequestHandler<Del
     /// <param name="cancellationToken">Cancellation token</param>
     public async Task Handle(DeleteCartCommand request, CancellationToken cancellationToken)
     {
-        var success = await repository.DeleteAsync(request.Id, cancellationToken);
+        var success = await _cartRepository.DeleteAsync(request.Id, cancellationToken);
         if (!success)
             throw new KeyNotFoundException($"Cart with ID {request.Id} not found");
     }

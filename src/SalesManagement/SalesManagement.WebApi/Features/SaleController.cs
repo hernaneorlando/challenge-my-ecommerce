@@ -3,6 +3,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SalesManagement.Application.Sales.CreateSale;
+using SalesManagement.Application.Sales.DeleteSale;
 using SalesManagement.Application.Sales.GetSaleById;
 using SalesManagement.Application.Sales.GetSales;
 
@@ -75,5 +76,27 @@ public class SaleController(IMediator _mediator) : Controller
     {
         var query = filters.GetQuery();
         return Ok(await _mediator.Send(query, cancellationToken));
+    }
+
+    /// <summary>
+    /// Deletes a sale by their ID
+    /// </summary>
+    /// <param name="id">The unique identifier of the sale to delete</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>Success response if the sale was deleted</returns>
+    [HttpDelete("{id}")]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> DeleteSale([FromRoute] Guid id, CancellationToken cancellationToken)
+    {
+        var command = new DeleteSaleCommand(id);
+        await _mediator.Send(command, cancellationToken);
+
+        return Ok(new ApiResponse
+        {
+            Success = true,
+            Message = "Sale deleted successfully"
+        });
     }
 }
