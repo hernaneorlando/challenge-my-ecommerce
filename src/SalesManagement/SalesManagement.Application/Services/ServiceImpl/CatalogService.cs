@@ -25,12 +25,24 @@ public class CatalogService : ICatalogService
     public async Task<ICollection<ProductDto>> GetProductDetailsAsync(ICollection<Guid> productsIds)
     {
         var filter = string.Join('&', productsIds.Select(id => $"id={id}"));
-        var queryString = $"_page=1&_size={productsIds.Count()}&{filter}";
+        var queryString = $"_page=1&_size={productsIds.Count}&{filter}";
 
         var response = await _httpClient.GetAsync($"products?{queryString}");
         response.EnsureSuccessStatusCode();
 
         var responseWithData = await response.Content.ReadFromJsonAsync<PaginatedResponse<ProductDto>>();
+        return responseWithData?.Data!.ToArray()!;
+    }
+
+    public async Task<ICollection<SupplierDto>> GetSupplierDetailsAsync(ICollection<Guid> suppliersIds)
+    {
+        var filter = string.Join('&', suppliersIds.Select(id => $"id={id}"));
+        var queryString = $"_page=1&_size={suppliersIds.Count}&{filter}";
+
+        var response = await _httpClient.GetAsync($"suppliers?{queryString}");
+        response.EnsureSuccessStatusCode();
+
+        var responseWithData = await response.Content.ReadFromJsonAsync<PaginatedResponse<SupplierDto>>();
         return responseWithData?.Data!.ToArray()!;
     }
 }

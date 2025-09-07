@@ -13,7 +13,6 @@ public class GetCartByIdProfile : Profile
     /// </summary>
     public GetCartByIdProfile()
     {
-        CreateMap<CartItem, GetCartByIdCartItemResponse>();
         CreateMap<Cart, GetCartByIdResponse>()
             .ForMember(r => r.Products, opt => opt.MapFrom(c => c.Items));
     }
