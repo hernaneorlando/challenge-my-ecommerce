@@ -1,5 +1,7 @@
 using Common.DomainCommon;
 using Common.Validations;
+using FluentValidation;
+using FluentValidation.Results;
 using SalesManagement.Domain.Enums;
 using SalesManagement.Domain.Validations;
 
@@ -80,15 +82,32 @@ public class Cart : BaseEntity
         Status = CartStatus.Open;
     }
 
+    public void Update(Cart cart)
+    {
+        if (Status == CartStatus.CheckedOut)
+            throw new ValidationException([new ValidationFailure(string.Empty, "The cart is already checked out.")]);
+
+        UpdatedAt = DateTime.UtcNow;
+        if (cart.CheckoutDate is null)
+            return;
+
+        CheckoutDate = cart.CheckoutDate;
+        Status = CartStatus.CheckedOut;
+    }
+
     public void AddItem(CartItem item)
     {
-        var existentItem = Items.FirstOrDefault(i => i.ProductId == item.ProductId);
+        var existentItem = Items
+            .FirstOrDefault(i => i.ProductId.ToString().Equals(item.ProductId.ToString(), StringComparison.InvariantCultureIgnoreCase));
+            
         if (existentItem is not null)
         {
             existentItem.Cart = this;
             existentItem.CartId = Id;
             existentItem.SupplierId = item.SupplierId;
             existentItem.UnitPrice = item.UnitPrice;
+            existentItem.Quantity = item.Quantity;
+            existentItem.UpdatedAt = DateTime.UtcNow;
         }
         else
         {

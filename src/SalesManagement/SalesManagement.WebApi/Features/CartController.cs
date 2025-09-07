@@ -7,6 +7,7 @@ using SalesManagement.Application.Carts.DeleteCart;
 using SalesManagement.Application.Carts.DeleteCartItem;
 using SalesManagement.Application.Carts.GetCartById;
 using SalesManagement.Application.Carts.GetCarts;
+using SalesManagement.Application.Carts.UpdateCart;
 
 namespace SalesManagement.WebApi.Features;
 
@@ -77,6 +78,29 @@ public class CartController(IMediator mediator) : Controller
     {
         var query = filters.GetQuery();
         return Ok(await mediator.Send(query, cancellationToken));
+    }
+
+    /// <summary>
+    /// Update a cart
+    /// </summary>
+    /// <param name="request">The cart update request</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>The updated cart details</returns>
+    [HttpPut("{id}")]
+    [ProducesResponseType(typeof(ApiResponseWithData<UpdateCartResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> UpdateCart(Guid id, [FromBody] UpdateCartCommand request, CancellationToken cancellationToken)
+    {
+        request.Id = id;
+        var response = await mediator.Send(request, cancellationToken);
+
+        return Ok(new ApiResponseWithData<UpdateCartResponse>
+        {
+            Success = true,
+            Message = "Product updated successfully",
+            Data = response
+        });
     }
 
     /// <summary>

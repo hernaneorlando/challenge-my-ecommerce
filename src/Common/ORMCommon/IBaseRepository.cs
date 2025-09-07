@@ -1,3 +1,5 @@
+using System.Linq.Expressions;
+
 namespace Common.ORMCommon;
 
 /// <summary>
@@ -21,4 +23,12 @@ public interface IBaseRepository<TEntity>
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>The entity if found, null otherwise</returns>
     Task<TEntity> Find(ISpecification<TEntity> specification, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Retrieves an entityby a pre-defined constraint
+    /// </summary>
+    /// <param name="specification">The constraint to find the entity</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>The entity if found, null otherwise</returns>
+    Task<TEntity> Find<TProperty>(ISpecification<TEntity> specification, CancellationToken cancellationToken = default, params Expression<Func<TEntity, TProperty>>[] includes);
 }
