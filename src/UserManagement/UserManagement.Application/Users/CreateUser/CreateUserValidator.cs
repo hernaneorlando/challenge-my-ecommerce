@@ -1,7 +1,7 @@
-﻿using Common.DomainCommon.Validation;
-using UserManagement.Domain.Enums;
+﻿using UserManagement.Domain.Enums;
 using UserManagement.Domain.Validations;
 using FluentValidation;
+using Common.DomainCommon.Validations;
 
 namespace UserManagement.Application.Users.CreateUser;
 

@@ -1,4 +1,4 @@
-using Common.DomainCommon.Validation;
+using Common.DomainCommon.Validations;
 using FluentAssertions;
 using Xunit;
 

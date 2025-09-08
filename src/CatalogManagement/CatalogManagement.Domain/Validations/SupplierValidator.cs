@@ -1,5 +1,5 @@
 using CatalogManagement.Domain.Entities;
-using Common.DomainCommon.Validation;
+using Common.DomainCommon.Validations;
 using FluentValidation;
 
 namespace CatalogManagement.Domain.Validations;

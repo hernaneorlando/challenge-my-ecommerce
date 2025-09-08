@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace Common.DomainCommon.Validation;
+namespace Common.DomainCommon.Validations;
 
 public class PhoneValidator : AbstractValidator<string>
 {
