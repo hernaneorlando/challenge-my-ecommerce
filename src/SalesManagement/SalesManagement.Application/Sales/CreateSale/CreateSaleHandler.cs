@@ -6,6 +6,7 @@ using SalesManagement.Application.Repositories;
 using SalesManagement.Application.Services;
 using SalesManagement.Domain.Entities;
 using SalesManagement.Domain.Events;
+using SalesManagement.Domain.ValueObjects;
 
 namespace SalesManagement.Application.Sales.CreateSale;
 

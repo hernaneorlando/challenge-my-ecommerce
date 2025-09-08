@@ -1,15 +1,15 @@
 using Common.DomainCommon;
 
-namespace SalesManagement.Domain.Entities;
+namespace SalesManagement.Domain.ValueObjects;
 
 /// <summary>
-/// Represents a Supplier, as an External Identity, in the system with minimal information.
+/// Represents a Product, as an External Identity, in the system with minimal information.
 /// This entity follows domain-driven design principles and includes business rules validation.
 /// </summary>
-public class SaleSupplier : ExternalIdentity
+public class SaleProduct : ExternalIdentity
 {
     /// <summary>
-    /// Gets or sets the supplier's full name.
+    /// Gets or sets the product's name.
     /// </summary>
     public string Name { get; set; } = string.Empty;
 }

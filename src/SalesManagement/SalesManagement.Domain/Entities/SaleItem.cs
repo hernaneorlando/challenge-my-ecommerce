@@ -1,5 +1,6 @@
 using Common.DomainCommon;
 using SalesManagement.Domain.Common;
+using SalesManagement.Domain.ValueObjects;
 
 namespace SalesManagement.Domain.Entities;
 

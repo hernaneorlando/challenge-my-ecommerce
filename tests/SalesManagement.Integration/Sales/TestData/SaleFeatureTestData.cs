@@ -1,6 +1,7 @@
 using Bogus;
 using SalesManagement.Domain.Entities;
 using SalesManagement.Domain.Enums;
+using SalesManagement.Domain.ValueObjects;
 
 namespace SalesManagement.Integration.Sales.TestData;
 

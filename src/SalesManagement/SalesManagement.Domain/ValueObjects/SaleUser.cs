@@ -1,6 +1,6 @@
 using Common.DomainCommon;
 
-namespace SalesManagement.Domain.Entities;
+namespace SalesManagement.Domain.ValueObjects;
 
 /// <summary>
 /// Represents a User, as an External Identity, in the system with minimal information.

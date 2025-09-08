@@ -1,5 +1,5 @@
-using CatalogManagement.Domain.Entities.ValueObjects;
 using CatalogManagement.Domain.Validations;
+using CatalogManagement.Domain.ValueObjects;
 using Common.DomainCommon;
 using Common.Validations;
 
