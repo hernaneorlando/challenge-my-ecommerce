@@ -1,6 +1,6 @@
 using Bogus;
 using CatalogManagement.Domain.Entities;
-using CatalogManagement.Domain.Entities.ValueObjects;
+using CatalogManagement.Domain.ValueObjects;
 
 namespace CatalogManagement.Unit.Domain.Entities.TestData;
 

@@ -1,6 +1,6 @@
 using Common.DomainCommon.ValueObjects;
 
-namespace CatalogManagement.Domain.Entities.ValueObjects;
+namespace CatalogManagement.Domain.ValueObjects;
 
 /// <summary>
 /// Represents a product rating in the system.

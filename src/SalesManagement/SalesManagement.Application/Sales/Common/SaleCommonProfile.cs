@@ -1,6 +1,7 @@
 using AutoMapper;
 using SalesManagement.Application.Services.DTOs;
 using SalesManagement.Domain.Entities;
+using SalesManagement.Domain.ValueObjects;
 
 namespace SalesManagement.Application.Sales.Common;
 

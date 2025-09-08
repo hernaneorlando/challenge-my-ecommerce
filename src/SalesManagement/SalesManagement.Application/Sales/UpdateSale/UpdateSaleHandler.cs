@@ -5,6 +5,7 @@ using MediatR;
 using SalesManagement.Application.Repositories;
 using SalesManagement.Application.Services;
 using SalesManagement.Domain.Entities;
+using SalesManagement.Domain.ValueObjects;
 
 namespace SalesManagement.Application.Sales.UpdateSale;
 

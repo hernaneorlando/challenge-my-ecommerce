@@ -5,6 +5,7 @@ using FluentValidation.Results;
 using SalesManagement.Domain.Common;
 using SalesManagement.Domain.Enums;
 using SalesManagement.Domain.Validations;
+using SalesManagement.Domain.ValueObjects;
 
 namespace SalesManagement.Domain.Entities;
 

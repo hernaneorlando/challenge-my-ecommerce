@@ -1,8 +1,9 @@
 using Bogus;
-using CatalogManagement.Domain.Entities.ValueObjects;
+using CatalogManagement.Domain.ValueObjects;
 using SalesManagement.Application.Services.DTOs;
 using SalesManagement.Domain.Entities;
 using SalesManagement.Domain.Enums;
+using SalesManagement.Domain.ValueObjects;
 
 namespace SalesManagement.Integration.Sales.TestData;
 
