@@ -1,5 +1,5 @@
 using CatalogManagement.Domain.Entities;
-using CatalogManagement.Domain.Entities.ValueObjects;
+using CatalogManagement.Domain.ValueObjects;
 using AutoMapper;
 
 namespace CatalogManagement.Application.Products.UpdateProduct;
