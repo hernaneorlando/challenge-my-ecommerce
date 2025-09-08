@@ -1,7 +1,7 @@
-﻿using Common.DomainCommon.Validation;
-using UserManagement.Domain.Entities;
+﻿using UserManagement.Domain.Entities;
 using UserManagement.Domain.Enums;
 using FluentValidation;
+using Common.DomainCommon.Validations;
 
 namespace UserManagement.Domain.Validations;
 

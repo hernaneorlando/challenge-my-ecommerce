@@ -1,3 +1,6 @@
+using System.Text.Json.Serialization;
+using Common.Events;
+using MediatR;
 using SalesManagement.Application.Sales.Common;
 using SalesManagement.Domain.Enums;
 
@@ -6,7 +9,7 @@ namespace SalesManagement.Application.Sales.CreateSale;
 /// <summary>
 /// API response model for CreateSale operation
 /// </summary>
-public record CreateSaleResponse
+public record CreateSaleResponse : IPublishDomainEvents
 {
     /// <summary>
     /// Gets or sets the unique identifier for the sale.
@@ -53,4 +56,13 @@ public record CreateSaleResponse
     /// Gets or sets the sale items.
     /// </summary>
     public ICollection<SaleItemResponse> Products { get; set; } = [];
+
+    private readonly List<INotification> _domainEvents = [];
+
+    [JsonIgnore]
+    public IReadOnlyCollection<INotification> DomainEvents => _domainEvents.AsReadOnly();
+
+    public void ClearDomainEvents() => _domainEvents.Clear();
+
+    public void AddDomainEvent(INotification domainEvent) => _domainEvents.Add(domainEvent);
 }

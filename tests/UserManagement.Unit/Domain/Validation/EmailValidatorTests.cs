@@ -1,7 +1,7 @@
-using Common.DomainCommon.Validation;
 using UserManagement.Unit.Domain.Entities.TestData;
 using FluentValidation.TestHelper;
 using Xunit;
+using Common.DomainCommon.Validations;
 
 namespace UserManagement.Unit.Domain.Validation;
 

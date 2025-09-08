@@ -5,6 +5,7 @@ using MediatR;
 using SalesManagement.Application.Repositories;
 using SalesManagement.Application.Services;
 using SalesManagement.Domain.Entities;
+using SalesManagement.Domain.Events;
 
 namespace SalesManagement.Application.Sales.CreateSale;
 
@@ -42,6 +43,8 @@ public class CreateSaleHandler(
         sale.Create();
 
         var createdSale = await _saleRepository.CreateAsync(sale, cancellationToken);
-        return _mapper.Map<CreateSaleResponse>(createdSale);
+        var result = _mapper.Map<CreateSaleResponse>(createdSale);
+        result.AddDomainEvent(new SaleCreatedEvent(cart.Id, sale.Id));
+        return result;
     }
 }

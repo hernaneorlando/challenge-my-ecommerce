@@ -11,6 +11,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Serilog;
 using System.Text.Json.Serialization;
+using Common.Events;
 
 namespace SalesManagement.WebApi;
 
@@ -97,6 +98,7 @@ public class Program
                     typeof(Program).Assembly
                 );
                 cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+                cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(DomainEventPublisherBehavior<,>));
             });
 
             var app = builder.Build();

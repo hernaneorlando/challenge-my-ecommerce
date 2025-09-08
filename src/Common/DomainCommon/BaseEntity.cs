@@ -1,6 +1,4 @@
-﻿using Common.Validations;
-
-namespace Common.DomainCommon;
+﻿namespace Common.DomainCommon;
 
 public class BaseEntity : IComparable<BaseEntity>
 {
