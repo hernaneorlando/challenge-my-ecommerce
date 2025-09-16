@@ -6,8 +6,8 @@ This project is a microservices-based e-commerce solution developed as part of a
 
 - [Overview](#overview)
 - [Requirements](#requirements)
-- [Tech Stack](#tech-stack)
-- [Project Structure](#project-structure)
+- [Tech Stack](.doc/tech-stack.md)
+- [Project Structure](.doc/project-structure.md)
 - [Getting Started](#getting-started)
 - [Features Implemented](#features-implemented)
 - [Areas for Improvement](#areas-for-improvement)
